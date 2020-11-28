@@ -1,4 +1,4 @@
-# GRAND-PRIX
+GRAND-PRIX
 =========================
 
 Andres Aguirre Alvarez & Luis Garcia Miramontes
