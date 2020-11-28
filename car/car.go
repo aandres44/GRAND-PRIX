@@ -34,7 +34,7 @@ func newCar(pos coord, d direction, p place, n number, c color) *car {
 	}
 }
 
-func (c *car) changeDir(d direction) { // <------- hay que revisar si es necesario ver los opuestos
+func (c *car) changeDir(d direction) { // <------- hay que revisar si es necesario ver los opuestos 
 	opposites := map[direction]direction{
 		N: S,
 		S: N,
