@@ -15,7 +15,7 @@ const (
 type direction int
 
 type car struct {
-	position []coord
+	position coord
 	direction direction
 	place int
 	number int
@@ -53,6 +53,14 @@ func (c *car) changeDir(d direction) { // <------- hay que revisar si es necesar
 
 func (c *car) getPos() coord {
 	return c.position
+}
+
+func (c *car) getPlace() int {
+	return c.place
+}
+
+func (c *car) getNumber() int {
+	return c.number
 }
 
 func (c *car) move() error() {
