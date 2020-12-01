@@ -3,7 +3,7 @@
 This is an implementation of a a multithreaded grand prix simulator where every car will be an independent entity. 
 It will be simulating an N laps race.
 
-## Technical Requirements
+## Technical Features
 
 - The race's lap is introduced by the user as well as the number of cars.
 - Random max speed for each car.
