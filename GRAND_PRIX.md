@@ -73,19 +73,19 @@ The first 3 were used to edit the images and text on them. Then the last 2 were 
 -	"golang.org/x/image/colornames"
 
 ### Structures
-Car
-	id int - An identifier for the cars
-	currentLap int - Current lap of the cars
-	speed chan int - Channel for the goroutine to get the speed
-	boundPos chan int - Channel for the gourutine to get the position in the Y bounds of the car
-	sprite *pixel.Sprite - The sprite(image) of the car
-	mat pixel.Matrix  - Matrix of the sprite
-	seed rand.Source - 
-	botBound int
-	topBound int
-	crashing bool
-	finished bool
-	position int
-	finalPosition int
-	timeElapsed time.Duration
+#### Car
+-	id int - An identifier for the cars
+-	currentLap int - Current lap of the cars
+-	speed chan int - Channel for the goroutine to get the speed
+-	boundPos chan int - Channel for the gourutine to get the position in the Y bounds of the car
+-	sprite *pixel.Sprite - The sprite(image) of the car
+-	mat pixel.Matrix  - Matrix of the sprite
+-	seed rand.Source - 
+-	botBound int
+-	topBound int
+-	crashing bool
+-	finished bool
+-	position int
+-	finalPosition int
+-	timeElapsed time.Duration
   
