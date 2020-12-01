@@ -5,37 +5,37 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/faiface/pixel/text"
-	"golang.org/x/image/font/basicfont"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
+	"golang.org/x/image/font/basicfont"
 
 	"image"
-	_"image/png"
+	_ "image/png"
 	"math/rand"
-	
+
+	"fmt"
 	"os"
 	"sort"
 	"time"
-	"fmt"
 )
 
 type Car struct {
-	id int
-	currentLap int
-	speed chan int
-	boundPos chan int
-	sprite *pixel.Sprite
-	mat pixel.Matrix
-	seed rand.Source
-	botBound int
-	topBound int
-	crashing bool
-	finished bool
-	position int
+	id            int
+	currentLap    int
+	speed         chan int
+	boundPos      chan int
+	sprite        *pixel.Sprite
+	mat           pixel.Matrix
+	seed          rand.Source
+	botBound      int
+	topBound      int
+	crashing      bool
+	finished      bool
+	position      int
 	finalPosition int
-	timeElapsed time.Duration
+	timeElapsed   time.Duration
 }
 
 func loadPicture(path string) (pixel.Picture, error) {
@@ -54,14 +54,13 @@ func loadPicture(path string) (pixel.Picture, error) {
 	return pixel.PictureDataFromImage(img), nil
 }
 
-
 func run() {
 
 	// set the actual window
 	cfg := pixelgl.WindowConfig{
 		Title:  "Grand Prix",
 		Bounds: pixel.R(0, 0, 1200, 900),
-		VSync: true,
+		VSync:  true,
 	}
 
 	// create an actual window
@@ -79,7 +78,7 @@ func run() {
 	infoAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	infoTxt := text.New(pixel.V(500, 850), infoAtlas)
 
-	// winners info 
+	// winners info
 	winnerAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	winnerTxt := text.New(pixel.V(250, 500), winnerAtlas)
 
@@ -100,13 +99,12 @@ func run() {
 
 	// initialize all the cars
 	for i := 0; i < totalCars; i++ {
-		cars = append(cars, Car{i, 0, make(chan int), make(chan int), pixel.NewSprite(carImg, carImg.Bounds()), pixel.IM.Moved(pixel.V(float64(initSpace), 0)), rand.NewSource(time.Now().UnixNano() + int64(botSpace)), initSpace - 10, initSpace + 10, false, false, 0, 0, 100*time.Millisecond},)
+		cars = append(cars, Car{i, 0, make(chan int), make(chan int), pixel.NewSprite(carImg, carImg.Bounds()), pixel.IM.Moved(pixel.V(float64(initSpace), 0)), rand.NewSource(time.Now().UnixNano() + int64(botSpace)), initSpace - 10, initSpace + 10, false, false, 0, 0, 100 * time.Millisecond})
 		totalSpeed = append(totalSpeed, 0)
 		tmpBoundsPos = append(tmpBoundsPos, 0)
-		botSpace += 1/totalCars
+		botSpace += 1 / totalCars
 		initSpace += carLocation
 	}
-
 
 	win.Clear(colornames.Black)
 
@@ -120,14 +118,14 @@ func run() {
 	for !win.Closed() {
 
 		if winners == 3 {
-			
+
 			win.Clear(colornames.Black)
 			winnerTxt.Clear()
 			infoTxt.Clear()
 			scoreTxt.Clear()
 
 			for i := 0; i < winners; i++ {
-				fmt.Fprintf(winnerTxt, "Place: %d		ID Car: %d		Time: %.4v\n", finalThree[i].finalPosition, finalThree[i].id + 1, finalThree[i].timeElapsed)
+				fmt.Fprintf(winnerTxt, "Place: %d		ID Car: %d		Time: %.4v\n", finalThree[i].finalPosition, finalThree[i].id+1, finalThree[i].timeElapsed)
 			}
 
 			winnerTxt.Draw(win, pixel.IM.Scaled(winnerTxt.Orig, 3))
@@ -140,9 +138,9 @@ func run() {
 
 			for i := 0; i < totalCars; i++ {
 				win.Clear(colornames.Black)
-				lapSpeed :=  <- cars[i].speed
+				lapSpeed := <-cars[i].speed
 				if !cars[i].crashing {
-					tmpBoundsPos[i] += <- cars[i].boundPos
+					tmpBoundsPos[i] += <-cars[i].boundPos
 				} else {
 					tmpBoundsPos[i] = 0
 					lapSpeed = -1
@@ -152,9 +150,9 @@ func run() {
 
 				// print winners
 				if !cars[i].finished {
-					fmt.Fprintf(infoTxt, "Car: %d		Lap: %d		  pos: %d		%d mp/h\n", cars[i].id + 1, cars[i].currentLap,cars[i].position, lapSpeed * 20 )
+					fmt.Fprintf(infoTxt, "Car: %d		Lap: %d		  pos: %d		%d mp/h\n", cars[i].id+1, cars[i].currentLap, cars[i].position, lapSpeed*20)
 				} else {
-					fmt.Fprintf(infoTxt, "Car: %d		Place: %d		Elapsed time: %.4v\n", cars[i].id + 1, cars[i].finalPosition, cars[i].timeElapsed)
+					fmt.Fprintf(infoTxt, "Car: %d		Place: %d		Elapsed time: %.4v\n", cars[i].id+1, cars[i].finalPosition, cars[i].timeElapsed)
 				}
 			}
 
@@ -177,20 +175,19 @@ func run() {
 			// print the circuit each time
 			circuitSprite := pixel.NewSprite(circuit, circuit.Bounds())
 			mat := pixel.IM
-			mat = mat.Moved(pixel.V(400,500))
-			mat = mat.ScaledXY(pixel.V(200,540),pixel.V(2, 5))
+			mat = mat.Moved(pixel.V(400, 500))
+			mat = mat.ScaledXY(pixel.V(200, 540), pixel.V(2, 5))
 			circuitSprite.Draw(win, mat)
-
 
 			tmpInitPos := carLocation
 			for i := 0; i < totalCars; i++ {
-				
+
 				tmpBoundPos := tmpInitPos + tmpBoundsPos[i]
 				if tmpBoundPos < 60 {
 					tmpBoundPos = 70
-				} 
+				}
 
-				newVector := pixel.V(float64(totalSpeed[i]),float64(tmpBoundPos))
+				newVector := pixel.V(float64(totalSpeed[i]), float64(tmpBoundPos))
 				cars[i].mat = pixel.IM.Moved(newVector)
 
 				cars[i].botBound = tmpInitPos + tmpBoundsPos[i] - 10
@@ -207,17 +204,16 @@ func run() {
 						}
 					}
 				}
-				
-				
+
 				// redraw all cars
 				cars[i].sprite.Draw(win, cars[i].mat)
-				
+
 				// 1450
 				if totalSpeed[i] > 1100 {
 					totalSpeed[i] = 0
 					cars[i].currentLap++
 
-					if cars[i].currentLap == laps && !cars[i].finished{
+					if cars[i].currentLap == laps && !cars[i].finished {
 						cars[i].finished = true
 						cars[i].timeElapsed = time.Since(start)
 						winners++
@@ -229,11 +225,11 @@ func run() {
 
 				}
 			}
-			
+
 			scoreTxt.Draw(win, pixel.IM.Scaled(scoreTxt.Orig, 4))
 			infoTxt.Draw(win, pixel.IM.Scaled(infoTxt.Orig, 1.5))
 		}
-		
+
 		// update the frame
 		win.Update()
 	}
@@ -253,27 +249,26 @@ var winners int
 var finalThree []Car
 
 func main() {
-	totalCars = 8
-	laps = 2
+
+	totalCars, laps = cars_laps()
 	winners = 0
 
 	// puts PixelGL in control og the main function
 	pixelgl.Run(run)
 }
 
-
 // gorutine to obtain car speed
 func getCarSpeed(rnd chan int, source rand.Source) {
 	r := rand.New(source)
 	a := 8
 	b := 12
-	for  {
+	for {
 		time.Sleep(50 * time.Millisecond)
 		select {
-		case <- rnd:
+		case <-rnd:
 			return
 		default:
-			rnd <- a + r.Intn(b - a + 1)
+			rnd <- a + r.Intn(b-a+1)
 		}
 	}
 }
@@ -283,13 +278,13 @@ func getBoundsPos(rnd chan int, source rand.Source) {
 	a := -5
 	b := 5
 	r := rand.New(source)
-	for  {
+	for {
 		time.Sleep(50 * time.Millisecond)
 		select {
-		case <- rnd:
+		case <-rnd:
 			return
 		default:
-			rnd <- a + r.Intn(b - a + 1)
+			rnd <- a + r.Intn(b-a+1)
 		}
 	}
 }
