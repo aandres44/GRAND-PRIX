@@ -38,6 +38,7 @@ type Car struct {
 	timeElapsed   time.Duration
 }
 
+// Code taken from "github.com/faiface/pixel" Documentation
 func loadPicture(path string) (pixel.Picture, error) {
 	file, err := os.Open(path)
 
@@ -295,7 +296,7 @@ func getBoundsPos(rnd chan int, source rand.Source) {
 }
 
 func decreaseSpeed(i int) {
-	time.Sleep(1000 * time.Millisecond)
+	time.Sleep(800 * time.Millisecond)
 	cars[i].crashing = false
 }
 
