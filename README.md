@@ -33,10 +33,21 @@ where a car can return to the race if is crashing with another car.
 
 28/11/2020
 
-link to video
+[link to video](https://youtu.be/hVRedqnYq6M)
 image of diagram
 
 ### Info
+
+#### Language
+- [Go](https://golang.org/)
+
+#### Build
+- make build
+This will install every package necessary for the build and create a binary file that can be run with ./car
+
+#### Run
+- make run
+Execute the binary
 
 ### Packages
 We used the pexternal ackages image and faiface/pixel.
