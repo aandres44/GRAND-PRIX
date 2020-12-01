@@ -1,9 +1,9 @@
 package main
 
 import (
-	// "bufio"
-	// "log"
-	// "strconv"
+	"bufio"
+	"log"
+	"strconv"
 
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/font/basicfont"
@@ -297,4 +297,50 @@ func getBoundsPos(rnd chan int, source rand.Source) {
 func decreaseSpeed(i int) {
 	time.Sleep(1000 * time.Millisecond)
 	cars[i].crashing = false
+}
+
+func scanner() string {
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	return scanner.Text()
+
+}
+
+func ask() (string, string) {
+
+	fmt.Println("\nSimple Shell")
+	fmt.Println("---------------------")
+	fmt.Print("Enter the number of cars 2-10 ----> ")
+
+	cars := scanner()
+
+	fmt.Println("\n---------------------")
+	fmt.Print("Enter the number of laps 3-15 ----> ")
+
+	laps := scanner()
+
+	return cars, laps
+}
+
+func cars_laps() (int, int) {
+
+	carstr, lapstr := (ask())
+
+	cars, err := strconv.Atoi(carstr)
+
+	if cars < 2 || cars > 10 {
+		log.Fatal("Invalid number of cars")
+	}
+
+	laps, err := strconv.Atoi(lapstr)
+
+	if laps < 3 || laps > 15 {
+		log.Fatal("Invalid number of laps")
+	}
+
+	if err != nil {
+		log.Fatal(err, " Please enter integers")
+	}
+
+	return cars, laps
 }
