@@ -1,18 +1,31 @@
 package main
 
 import (
+
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"golang.org/x/image/colornames"
+	"github.com/faiface/pixel/text"
+	"golang.org/x/image/font/basicfont"
 	
 	"image"
 	"os"
 	_"image/png"
 
-	// "fmt"
+	"fmt"
 	"time"
 	"math/rand"
 )
+
+
+type Car struct {
+	id int
+	lap int
+	position int
+	//speed chan int
+	sprite *pixel.Sprite
+	mat pixel.Matrix
+}
 
 func loadPicture(path string) (pixel.Picture, error) {
 	file, err := os.Open(path)
@@ -41,65 +54,110 @@ func run() {
 		panic(err)
 	}
 
+	// Text in the screen
+	// just say "score"
+	scoreAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
+	scoreTxt := text.New(pixel.V(500, 750), scoreAtlas)
+	fmt.Fprintln(scoreTxt, "Score: ")
+
+
+	infoAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
+	infoTxt := text.New(pixel.V(650, 820), infoAtlas)
+
+
+	// winnerAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
+	// winnerTxt := text.New(pixel.V(50, 500), winnerAtlas)
+
 	// Loads images
-	score, scoreErr := loadPicture("score.png")
-	if scoreErr != nil {
-		panic(scoreErr)
+	carPic, err := loadPicture("car.png")
+	if err != nil {
+		panic(err)
 	}
 
 	circuit, err := loadPicture("pista.png")
 	if err != nil {
 		panic(err)
 	}
+
 	win.Clear(colornames.Black)
 
 
 	// edit position and scale of images
-	scoreSprite := pixel.NewSprite(score, score.Bounds())
-	scoreSprite.Draw(win, pixel.IM.Moved(pixel.V(800, 800)))
-
+	// circuit
 	circuitSprite := pixel.NewSprite(circuit, circuit.Bounds())
 	mat := pixel.IM
 	mat = mat.Moved(pixel.V(500,500))
 	mat = mat.ScaledXY(pixel.V(300,540),pixel.V(2.5, 5))
 	circuitSprite.Draw(win, mat)
 
+	initSpaceCar:= 570.0
+	spaceCar:= 500.0 / totalCars
+	
+	// car init
+	for i:= 0; i< totalCars; i++{
+		cars = append(cars, Car{i,0,0,pixel.NewSprite(carPic, carPic.Bounds()), pixel.IM.Moved(pixel.V(70, initSpaceCar))})
+		initSpaceCar -= float64(spaceCar)
+	}
+
+// -------------------------------------------------------------//
+
 	for !win.Closed() {
+		scoreTxt.Draw(win, pixel.IM.Scaled(scoreTxt.Orig, 4))
+
+		infoTxt.Clear()
+
+		// winners
+		if winners == 3{
+
+		} else{
+			//infoTxt.Clear()
+			
+
+			for i:= 0; i< totalCars; i++{
+				// update positions
+
+				//print car info
+				//fmt.Fprintf(infoTxt, "Car: %d  Lap: %d  Position: %d  Speed: %d mp/h \n", cars[i].id+1,cars[i].lap,cars[i].position,speed)
+				fmt.Fprintf(infoTxt, "Car: %d   Lap: %d   Position: %d  \n", cars[i].id+1,cars[i].lap,cars[i].position)
+
+			}
+
+
+
+			for i:= 0; i< totalCars; i++{
+				cars[i].sprite.Draw(win, cars[i].mat)
+			}
+
+		}
+
+		infoTxt.Draw(win, pixel.IM.Scaled(scoreTxt.Orig, 1.5))
+
+		// last thing to do
 		win.Update()
 	}
 }
 
+// global vars
+var winners int
+var totalCars int
+var cars []Car
+
+// var tempTotalSpeed []int
+// var tempXPos []int
+// var laps int
+// var positionArray []int
+// var top []Car
 
 func main() {
+
+	winners = 0
+	tempTotal := 10
+	totalCars = tempTotal
+	
+
+
 	pixelgl.Run(run)
 
-	// rand.Seed(time.Now().UnixNano())
-
-	// // 50 works like the number of step in each lap
-	// // here 
-	// laps:= 4
-	// jobs := make(chan int,laps*50)
-	// results := make(chan int,laps*50)
-
-	// go worker(jobs,results)
-	// go worker(jobs,results)
-
-	// for i := 0; i <  laps*50; i++{
-	// 	jobs <- i
-	// }
-
-	// close(jobs)
-
-	// for i := 0; i <  laps*50/2; i++{
-	// 	fmt.Println( "Car1 speed: ", <- results)
-	// 	fmt.Println( "Car2 speed: ", <- results)
-	// 	fmt.Println( " ")
-
-	// 	fmt.Println( <- results)
-	// 	fmt.Println( <- results)
-	// 	fmt.Println( " ")
-
-	// }
 
 }
 
