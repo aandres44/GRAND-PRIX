@@ -3,6 +3,7 @@
 This is an implementation of a a multithreaded grand prix simulator where every car will be an independent entity. 
 It will be simulating an N laps race.
 
+
 ## Technical Features
 
 - The race's lap is introduced by the user as well as the number of cars.
@@ -14,6 +15,7 @@ It will be simulating an N laps race.
 - Displays each car's speed, position, racing time and lap.
 - At the end, top 3 winners is displayed, if there is a tie for 3rd more cars will be shown.
 
+
 ## Build
 
 ### On __Linux__ or __MacOs__
@@ -21,6 +23,7 @@ It will be simulating an N laps race.
 ```bash
 # To compile the go proyect
 make build
+# This will install every package necessary for the build and create a binary file that can be run with ./car
 
 # To remove the executable created after compilation.
 make clean
@@ -50,3 +53,39 @@ make
 ```bash
 go run game.go
 ```
+
+
+## Info
+
+### Language
+- [Go](https://golang.org/)
+
+### Packages
+We used the external packages image and faiface/pixel.
+
+The first 3 were used to edit the images and text on them. Then the last 2 were used to import font types and colors
+ 
+-	"github.com/faiface/pixel/text"
+-	"github.com/faiface/pixel"
+-	"github.com/faiface/pixel/pixelgl"
+
+- "golang.org/x/image/font/basicfont"
+-	"golang.org/x/image/colornames"
+
+### Structures
+Car
+	id int - An identifier for the cars
+	currentLap int - Current lap of the cars
+	speed chan int - Channel for the goroutine to get the speed
+	boundPos chan int - Channel for the gourutine to get the position in the Y bounds of the car
+	sprite *pixel.Sprite - The sprite(image) of the car
+	mat pixel.Matrix  - Matrix of the sprite
+	seed rand.Source - 
+	botBound int
+	topBound int
+	crashing bool
+	finished bool
+	position int
+	finalPosition int
+	timeElapsed time.Duration
+  
