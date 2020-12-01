@@ -23,7 +23,6 @@ where a car can return to the race if is crashing with another car.
 
 [link to video](https://youtu.be/hVRedqnYq6M)
 
-![Preview](flow.png)
 
 ## Technical Requirements & Compilation/run
 All defined in - [GRAND_PRIX.md](GRAND_PRIX.md)
