@@ -28,6 +28,8 @@ Technical Requirements
 
 Final project for Advanced Programming Course
 
+![Preview](GP.gif)
+
 In this project we implemented a video game that uses goroutines to be able to place a car in the screen. Also we implemented a crashing
 where a car can return to the race if is crashing with another car.
 
