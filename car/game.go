@@ -1,15 +1,14 @@
 package main
 
 import (
-	"bufio"
-	"log"
-	"strconv"
+	// "bufio"
+	// "log"
+	// "strconv"
 
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/font/basicfont"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
-<<<<<<< HEAD
 	"golang.org/x/image/colornames"
 
 	"image"
@@ -37,28 +36,6 @@ type Car struct {
 	position int
 	finalPosition int
 	timeElapsed time.Duration
-=======
-	"github.com/faiface/pixel/text"
-	"golang.org/x/image/colornames"
-	"golang.org/x/image/font/basicfont"
-
-	"image"
-	_ "image/png"
-	"os"
-
-	"fmt"
-	"math/rand"
-	"time"
-)
-
-type Car struct {
-	id       int
-	lap      int
-	position int
-	//speed chan int
-	sprite *pixel.Sprite
-	mat    pixel.Matrix
->>>>>>> 1ef137fcdcc95043ec656b270d8e2130d104923a
 }
 
 func loadPicture(path string) (pixel.Picture, error) {
@@ -98,23 +75,15 @@ func run() {
 	scoreTxt := text.New(pixel.V(250, 750), scoreAtlas)
 	fmt.Fprintln(scoreTxt, "Score: ")
 
-<<<<<<< HEAD
 	// race info
-=======
->>>>>>> 1ef137fcdcc95043ec656b270d8e2130d104923a
 	infoAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	infoTxt := text.New(pixel.V(500, 850), infoAtlas)
 
-<<<<<<< HEAD
 	// winners info 
 	winnerAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	winnerTxt := text.New(pixel.V(250, 500), winnerAtlas)
 
 	win.SetSmooth(true)
-=======
-	// winnerAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
-	// winnerTxt := text.New(pixel.V(50, 500), winnerAtlas)
->>>>>>> 1ef137fcdcc95043ec656b270d8e2130d104923a
 
 	// loads the images
 	carImg, err := loadPicture("car.png")
@@ -138,7 +107,6 @@ func run() {
 		initSpace += carLocation
 	}
 
-<<<<<<< HEAD
 
 	win.Clear(colornames.Black)
 
@@ -148,30 +116,9 @@ func run() {
 	}
 
 	start := time.Now()
-=======
-	// edit position and scale of images
-	// circuit
-	circuitSprite := pixel.NewSprite(circuit, circuit.Bounds())
-	mat := pixel.IM
-	mat = mat.Moved(pixel.V(500, 500))
-	mat = mat.ScaledXY(pixel.V(300, 540), pixel.V(2.5, 5))
-	circuitSprite.Draw(win, mat)
-
-	initSpaceCar := 570.0
-	spaceCar := 500.0 / totalCars
-
-	// car init
-	for i := 0; i < totalCars; i++ {
-		cars = append(cars, Car{i, 0, 0, pixel.NewSprite(carPic, carPic.Bounds()), pixel.IM.Moved(pixel.V(70, initSpaceCar))})
-		initSpaceCar -= float64(spaceCar)
-	}
-
-	// -------------------------------------------------------------//
->>>>>>> 1ef137fcdcc95043ec656b270d8e2130d104923a
 
 	for !win.Closed() {
 
-<<<<<<< HEAD
 		if winners == 3 {
 			
 			win.Clear(colornames.Black)
@@ -210,27 +157,12 @@ func run() {
 					fmt.Fprintf(infoTxt, "Car: %d		Place: %d		Elapsed time: %.4v\n", cars[i].id + 1, cars[i].finalPosition, cars[i].timeElapsed)
 				}
 			}
-=======
-		// winners
-		if winners == 3 {
-
-		} else {
-			//infoTxt.Clear()
-
-			for i := 0; i < totalCars; i++ {
-				// update positions
-
-				//print car info
-				//fmt.Fprintf(infoTxt, "Car: %d  Lap: %d  Position: %d  Speed: %d mp/h \n", cars[i].id+1,cars[i].lap,cars[i].position,speed)
-				fmt.Fprintf(infoTxt, "Car: %d   Lap: %d   Position: %d  \n", cars[i].id+1, cars[i].lap, cars[i].position)
->>>>>>> 1ef137fcdcc95043ec656b270d8e2130d104923a
 
 			// check the car positions
 			for i := 0; i < totalCars; i++ {
 				carPositions = append(carPositions, totalSpeed[i])
 			}
 
-<<<<<<< HEAD
 			sort.Ints(carPositions)
 
 			tmpIndex := totalCars
@@ -278,9 +210,6 @@ func run() {
 				
 				
 				// redraw all cars
-=======
-			for i := 0; i < totalCars; i++ {
->>>>>>> 1ef137fcdcc95043ec656b270d8e2130d104923a
 				cars[i].sprite.Draw(win, cars[i].mat)
 				
 				// 1450
@@ -320,7 +249,6 @@ var tmpBoundsPos []int
 var laps int
 var carPositions []int
 
-<<<<<<< HEAD
 var winners int
 var finalThree []Car
 
@@ -328,17 +256,11 @@ func main() {
 	totalCars = 8
 	laps = 2
 	winners = 0
-=======
-	winners = 0
-	tempTotal := 10
-	totalCars = tempTotal
->>>>>>> 1ef137fcdcc95043ec656b270d8e2130d104923a
 
 	// puts PixelGL in control og the main function
 	pixelgl.Run(run)
 }
 
-<<<<<<< HEAD
 
 // gorutine to obtain car speed
 func getCarSpeed(rnd chan int, source rand.Source) {
@@ -375,64 +297,4 @@ func getBoundsPos(rnd chan int, source rand.Source) {
 func decreaseSpeed(i int) {
 	time.Sleep(1000 * time.Millisecond)
 	cars[i].crashing = false
-=======
-}
-
-//
-func worker(jobs <-chan int, results chan<- int) {
-	for n := range jobs {
-		results <- randomSpeed(n)
-		time.Sleep(time.Millisecond * 500)
-	}
-}
-
-func randomSpeed(n int) int {
-	return 260 + rand.Intn(10)
-}
-
-func scanner() string {
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	return scanner.Text()
-
-}
-
-func ask() (string, string) {
-
-	fmt.Println("\nSimple Shell")
-	fmt.Println("---------------------")
-	fmt.Print("Enter the number of cars 2-10 ----> ")
-
-	cars := scanner()
-
-	fmt.Println("\n---------------------")
-	fmt.Print("Enter the number of laps 3-15 ----> ")
-
-	laps := scanner()
-
-	return cars, laps
-}
-
-func cars_laps() (int, int) {
-
-	carstr, lapstr := (ask())
-
-	cars, err := strconv.Atoi(carstr)
-
-	if cars < 2 || cars > 10 {
-		log.Fatal("Invalid number of cars")
-	}
-
-	laps, err := strconv.Atoi(lapstr)
-
-	if laps < 3 || laps > 15 {
-		log.Fatal("Invalid number of laps")
-	}
-
-	if err != nil {
-		log.Fatal(err, " Please enter integers")
-	}
-
-	return cars, laps
->>>>>>> 1ef137fcdcc95043ec656b270d8e2130d104923a
 }
