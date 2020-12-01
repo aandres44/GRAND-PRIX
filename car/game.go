@@ -117,7 +117,7 @@ func run() {
 
 	for !win.Closed() {
 
-		if winners == 3 {
+		if winners >= 3 {
 
 			win.Clear(colornames.Black)
 			winnerTxt.Clear()
@@ -142,8 +142,8 @@ func run() {
 				if !cars[i].crashing {
 					tmpBoundsPos[i] += <-cars[i].boundPos
 				} else {
-					tmpBoundsPos[i] = 0
-					lapSpeed = -1
+					tmpBoundsPos[i] = 5
+					lapSpeed -= 5
 					go decreaseSpeed(i)
 				}
 				totalSpeed[i] += lapSpeed
@@ -185,21 +185,23 @@ func run() {
 				tmpBoundPos := tmpInitPos + tmpBoundsPos[i]
 				if tmpBoundPos < 60 {
 					tmpBoundPos = 70
+				}else if tmpBoundPos > 650 {
+					tmpBoundPos = 600
 				}
 
 				newVector := pixel.V(float64(totalSpeed[i]), float64(tmpBoundPos))
 				cars[i].mat = pixel.IM.Moved(newVector)
 
-				cars[i].botBound = tmpInitPos + tmpBoundsPos[i] - 10
-				cars[i].topBound = tmpInitPos + tmpBoundsPos[i] + 10
+				cars[i].botBound = tmpInitPos + tmpBoundsPos[i] - 12
+				cars[i].topBound = tmpInitPos + tmpBoundsPos[i] + 12
 
 				tmpInitPos += carLocation
 
 				// Checks for crashing
 				for j := 0; j < totalCars; j++ {
 					if i != j {
-						if cars[i].botBound < cars[j].topBound &&
-							cars[i].topBound > cars[j].botBound {
+						if cars[i].botBound <= cars[j].topBound &&
+							cars[i].topBound >= cars[j].botBound {
 							cars[i].crashing = true
 						}
 					}
@@ -219,8 +221,11 @@ func run() {
 						winners++
 						cars[i].finalPosition = winners
 						finalThree = append(finalThree, cars[i])
-						close(cars[i].boundPos)
-						close(cars[i].speed)
+						if winners >=3{
+							close(cars[i].boundPos)
+							close(cars[i].speed)
+						}
+
 					}
 
 				}
@@ -253,7 +258,7 @@ func main() {
 	totalCars, laps = cars_laps()
 	winners = 0
 
-	// puts PixelGL in control og the main function
+	// Render 
 	pixelgl.Run(run)
 }
 
@@ -273,7 +278,7 @@ func getCarSpeed(rnd chan int, source rand.Source) {
 	}
 }
 
-// gorutine to get variation at car bounds
+// gorutine to get variation at car Y bounds
 func getBoundsPos(rnd chan int, source rand.Source) {
 	a := -5
 	b := 5
@@ -303,14 +308,14 @@ func scanner() string {
 
 func ask() (string, string) {
 
-	fmt.Println("\nSimple Shell")
-	fmt.Println("---------------------")
-	fmt.Print("Enter the number of cars 2-10 ----> ")
+	fmt.Println("Welcome to Grand Prix!!!\n")
+	fmt.Println("--------------------------------------")
+	fmt.Print("Please enter the number of cars 3-9 ----> ")
 
 	cars := scanner()
 
-	fmt.Println("\n---------------------")
-	fmt.Print("Enter the number of laps 3-15 ----> ")
+	fmt.Println("\n-------------------------------------")
+	fmt.Print("Please enter the number of laps 2-10 ----> ")
 
 	laps := scanner()
 
@@ -323,13 +328,13 @@ func cars_laps() (int, int) {
 
 	cars, err := strconv.Atoi(carstr)
 
-	if cars < 2 || cars > 10 {
+	if cars < 3 || cars > 10 {
 		log.Fatal("Invalid number of cars")
 	}
 
 	laps, err := strconv.Atoi(lapstr)
 
-	if laps < 3 || laps > 15 {
+	if laps < 2 || laps > 15 {
 		log.Fatal("Invalid number of laps")
 	}
 
