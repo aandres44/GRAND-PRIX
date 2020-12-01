@@ -82,3 +82,10 @@ Car
 	finalPosition int
 	timeElapsed time.Duration
 ### Functions
+
+Deliverables
+------------
+- Source code in each team's member repository (`ap-labs/challenges/grand-prix`).
+- Architecture Document - [ARCHITECTURE.md](ARCHITECTURE.md)
+- Build/Run automation (`Makefile` and documentation - [GRAND_PRIX.md](GRAND_PRIX.md))
+- Project's presentation linked above
