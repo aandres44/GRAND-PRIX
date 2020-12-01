@@ -23,6 +23,7 @@ where a car can return to the race if is crashing with another car.
 
 [link to video](https://youtu.be/hVRedqnYq6M)
 
+![Preview](flow.png)
 
 ## Technical Requirements & Compilation/run
 All defined in - [GRAND_PRIX.md](GRAND_PRIX.md)
@@ -32,4 +33,4 @@ All defined in - [GRAND_PRIX.md](GRAND_PRIX.md)
 - Source code in each team's member repository (`ap-labs/challenges/grand-prix`).
 - Architecture Document - [ARCHITECTURE.md](ARCHITECTURE.md)
 - Build/Run automation (`Makefile` and documentation - [GRAND_PRIX.md](GRAND_PRIX.md))
-- Project's presentation [link to video](https://youtu.be/hVRedqnYq6M)
+- Project's presentation linked above
